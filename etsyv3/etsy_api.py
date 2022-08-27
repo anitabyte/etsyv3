@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
 from enum import Enum
-from typing import List
+from typing import Callable, List
 
 import requests
 
@@ -83,7 +83,14 @@ class Method(Enum):
 
 
 class EtsyAPI:
-    def __init__(self, keystring, token, refresh_token, expiry, refresh_save=None):
+    def __init__(
+        self,
+        keystring: str,
+        token: str,
+        refresh_token: str,
+        expiry: datetime,
+        refresh_save: Callable[[str, str, datetime], None] = None,
+    ):
         self.session = requests.Session()
         self.token = token
         self.user_id = token.split(".")[0]
