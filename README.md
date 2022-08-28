@@ -26,7 +26,8 @@ Just set up something simple in Flask would be my recommendation if you're doing
 
 In a Djano context, it could be as simple as something like the below, wired up to the router appropriately:
 
-```
+```python
+
 def oauth_callback(request):
     state = request.GET["state"]
     code = request.GET["code"]
@@ -37,6 +38,7 @@ def oauth_callback(request):
     token = auth.get_access_token()
     save_this_for_later(token)
     return HttpResponse("Logged in!")
+
 ```
 
 ### I'm authenticated, now what?
@@ -53,13 +55,15 @@ If you're using an IDE or a featureful text editor, your autocomplete should do 
 
 It's intended to be a 'neat' way to handle refreshes - it's a function (or method) that takes the token and metadata and does *stuff* with it, whatever you want that stuff to be. It could look something like this:
 
-```
+```python
+
 def refresh_save(access_token, refresh_token, expires_at):
     api_creds = get_some_persistence_object()
     api_creds.access_token = access_token
     api_creds.refresh_token = refresh_token
     api_creds.expires_at = expires_at
     api_creds.save()
+    
 ```
 
 ## Implementation details
