@@ -24,6 +24,21 @@ Technically no. If you set the callback URL to a localhost address that doesn't 
 
 Just set up something simple in Flask would be my recommendation if you're doing this for anything even semi-serious: it'll make your life easier.
 
+In a Djano context, it could be as simple as something like the below, wired up to the router appropriately:
+
+```
+def oauth_callback(request):
+    state = request.GET["state"]
+    code = request.GET["code"]
+    auth = AuthHelper(
+        keystring, redirect_uri, code_verifier="super_secret_and_random_code_verifier_string", state="super_secret_and_random_code_state_string"
+    )
+    auth.set_authorisation_code(code, state)
+    token = auth.get_access_token()
+    save_this_for_later(token)
+    return HttpResponse("Logged in!")
+```
+
 ### I'm authenticated, now what?
 
 Now that you have your keystring, access token, refresh token and token expiry time, you can create your `EtsyAPI` object! The `EtsyAPI` initialiser requires a `keystring`, `token`, `refresh_token` and `expiry` (as a `datetime` object) to be set: these will be the values returned from the call to `get_access_token()` in authentication. A function can be specified as a named argument `refresh_save`, that takes three parameters `access_token`, `refresh_token` and `expires_at`. This function will be run whenever the token needs to be refreshed to update it for future use and store it somewhere.
@@ -33,6 +48,19 @@ You can call any of the Etsy API methods from the `EtsyAPI` object: they'll gene
 For `POST` and `PUT` requests (requests that need payloads), there are subclassed `Request` types for each type. They generally take all required arguments into a constructor that is then serialised into JSON when passed to an API-calling method. Where you wish to null an optional parameter in a call, you should create the request parameter with the empty-form of whatever you're trying to null, so if the API takes a string, provide `""`; if a list, `[]`.
 
 If you're using an IDE or a featureful text editor, your autocomplete should do you quite well in working out what you can do: I've made a point to use type hints for all method parameters, so it should be OK. I will be adding more docstrings over time, so it should hopefully get easier to use.
+
+### How does `refresh_save` work?
+
+It's intended to be a 'neat' way to handle refreshes - it's a function (or method) that takes the token and metadata and does *stuff* with it, whatever you want that stuff to be. It could look something like this:
+
+```
+def refresh_save(access_token, refresh_token, expires_at):
+    api_creds = get_some_persistence_object()
+    api_creds.access_token = access_token
+    api_creds.refresh_token = refresh_token
+    api_creds.expires_at = expires_at
+    api_creds.save()
+```
 
 ## Implementation details
 
