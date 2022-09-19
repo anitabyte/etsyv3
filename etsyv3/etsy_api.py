@@ -155,7 +155,7 @@ class EtsyAPI:
 
         else:
             self.refresh()
-            self._issue_request(uri, **kwargs)
+            return self._issue_request(uri, **kwargs)
 
     def get_buyer_taxonomy_nodes(self):
         uri = f"{ETSY_API_BASEURL}/buyer-taxonomy/nodes"
