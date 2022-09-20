@@ -6,8 +6,8 @@ import tests.mock_helpers
 from etsyv3 import EtsyAPI
 from etsyv3.etsy_api import ETSY_API_BASEURL, Unauthorised
 
-EXPIRY_FUTURE = datetime.now() + timedelta(hours=1)
-EXPIRY_PAST = datetime.now() - timedelta(hours=1)
+EXPIRY_FUTURE = datetime.utcnow() + timedelta(hours=1)
+EXPIRY_PAST = datetime.utcnow() - timedelta(hours=1)
 KEYSTRING = ""
 TOKEN = ""
 REFRESH_TOKEN = ""

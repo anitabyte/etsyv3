@@ -102,7 +102,7 @@ class EtsyAPI:
             "x-api-key": keystring,
             "Authorization": "Bearer " + self.token,
         }
-        self.expiry = expiry.replace(tzinfo=timezone.utc).astimezone(tz=None)
+        self.expiry = expiry
         self.refresh_save = refresh_save
 
     @staticmethod
@@ -127,7 +127,7 @@ class EtsyAPI:
         ) and request_payload is None:
             raise ValueError
         if (
-            datetime.now().replace(tzinfo=timezone.utc).astimezone(tz=None)
+            datetime.utcnow()
             < self.expiry
         ):
             if method == Method.GET:
@@ -638,8 +638,8 @@ class EtsyAPI:
         refreshed = r.json()
         self.token = refreshed["access_token"]
         self.refresh_token = refreshed["refresh_token"]
-        tmp_expiry = datetime.now() + timedelta(seconds=refreshed["expires_in"])
-        self.expiry = tmp_expiry.replace(tzinfo=timezone.utc).astimezone(tz=None)
+        tmp_expiry = datetime.utcnow() + timedelta(seconds=refreshed["expires_in"])
+        self.expiry = tmp_expiry
         self.session.headers["Authorization"] = "Bearer " + self.token
         if self.refresh_save is not None:
             self.refresh_save(self.token, self.refresh_token, self.expiry)
