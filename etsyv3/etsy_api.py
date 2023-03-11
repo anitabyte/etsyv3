@@ -461,9 +461,9 @@ class EtsyAPI:
     def update_shop_receipt(self):
         raise NotImplementedError
 
-    def get_shop_receipts(self, shop_id: int, limit: int = None, offset: int = None):
+    def get_shop_receipts(self, shop_id: int, limit: int = None, offset: int = None, was_paid: bool = True, was_shipped: bool = False):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/receipts"
-        kwargs = {"limit": limit, "offset": offset}
+        kwargs = {"limit": limit, "offset": offset, "was_paid": was_paid, "was_shipped": was_shipped}
         return self._issue_request(uri, **kwargs)
 
     def create_receipt_shipment(self):
