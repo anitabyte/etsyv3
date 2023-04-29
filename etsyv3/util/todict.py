@@ -1,7 +1,9 @@
 from enum import Enum
 
 
-def todict(obj, classkey=None, nullable=[]):
+def todict(obj, classkey=None, nullable=None):
+    if nullable is None:
+        nullable = []
     if isinstance(obj, dict):
         data = {}
         for (k, v) in obj.items():
