@@ -281,3 +281,25 @@ class UpdateVariationImagesRequest(Request):
         for variation_image in variation_images:
             variation_image.pop("value", None)
         return UpdateVariationImagesRequest(variation_images)
+
+class UpdateListingPropertyRequest(Request):
+    nullable = []
+
+    mandatory = [
+        "value_ids",
+        "values",
+    ]
+
+    def __init__(
+        self,
+        value_ids: List[int] = None,
+        values: List[str] = None,
+        scale_id: int = None,
+    ):
+        self.value_ids = value_ids
+        self.values = values
+        self.scale_id = scale_id
+        super().__init__(
+            nullable=UpdateListingPropertyRequest.nullable,
+            mandatory=UpdateListingPropertyRequest.mandatory
+        )
