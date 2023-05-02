@@ -39,7 +39,7 @@ class Request:
 
     def get_dict(self) -> Dict[str, Any]:
         nulled = self.get_nulled()
-        return todict(self, nullable=self._nullable)
+        return todict(self, nullable=nulled)
 
 
 class CreateDraftListingRequest(Request):
