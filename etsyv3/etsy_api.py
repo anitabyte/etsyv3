@@ -4,12 +4,11 @@ from typing import Callable, List
 
 import requests
 
-from etsyv3.models import ListingFile, ListingProperty, Request, UpdateListingRequest
-from etsyv3.models.listing_request import (
-    CreateDraftListingRequest,
-    UpdateListingInventoryRequest,
-    UpdateVariationImagesRequest,
-)
+from etsyv3.models import (ListingFile, ListingProperty, Request,
+                           UpdateListingRequest)
+from etsyv3.models.listing_request import (CreateDraftListingRequest,
+                                           UpdateListingInventoryRequest,
+                                           UpdateVariationImagesRequest)
 
 ETSY_API_BASEURL = "https://openapi.etsy.com/v3/application/"
 
@@ -80,6 +79,7 @@ class Method(Enum):
     POST = 2
     PUT = 3
     DELETE = 4
+    PATCH = 5
 
 
 class EtsyAPI:
@@ -137,6 +137,8 @@ class EtsyAPI:
                 return_val = self.session.put(uri, json=request_payload.get_dict())
             elif method == method.POST:
                 return_val = self.session.post(uri, json=request_payload.get_dict())
+            elif method == method.PATCH:
+                return_val = self.session.patch(uri, json=request_payload.get_dict())
             else:
                 return_val = self.session.delete(uri)
             if return_val.status_code == 400:
@@ -295,7 +297,7 @@ class EtsyAPI:
         self, shop_id: int, listing_id: int, listing: UpdateListingRequest
     ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}"
-        raise NotImplementedError
+        return self._issue_request(uri, method=Method.PATCH, request_payload=listing)
 
     def get_listings_by_shop_receipt(
         self, shop_id: int, receipt_id: int, limit=None, offset=None
