@@ -4,11 +4,13 @@ from typing import Callable, List
 
 import requests
 
-from etsyv3.models import (ListingFile, ListingProperty, Request,
-                           UpdateListingRequest)
-from etsyv3.models.listing_request import (CreateDraftListingRequest,
-                                           UpdateListingInventoryRequest,
-                                           UpdateVariationImagesRequest)
+from etsyv3.models import ListingFile, ListingProperty, Request, UpdateListingRequest
+from etsyv3.models.listing_request import (
+    CreateDraftListingRequest,
+    UpdateListingInventoryRequest,
+    UpdateVariationImagesRequest,
+    UploadListingImageRequest,
+)
 
 ETSY_API_BASEURL = "https://openapi.etsy.com/v3/application/"
 
@@ -98,7 +100,6 @@ class EtsyAPI:
         self.keystring = keystring
         self.session.headers = {
             "Accept": "application/json",
-            "Content-Type": "application/json",
             "x-api-key": keystring,
             "Authorization": "Bearer " + self.token,
         }
@@ -135,6 +136,12 @@ class EtsyAPI:
                 return_val = self.session.get(uri_full)
             elif method == method.PUT:
                 return_val = self.session.put(uri, json=request_payload.get_dict())
+            elif method == method.POST and isinstance(request_payload, UploadListingImageRequest):
+                return_val = self.session.post(
+                    uri,
+                    files=request_payload.image,
+                    data=request_payload.data
+                )
             elif method == method.POST:
                 return_val = self.session.post(uri, json=request_payload.get_dict())
             elif method == method.PATCH:
@@ -357,8 +364,14 @@ class EtsyAPI:
         uri = f"{ETSY_API_BASEURL}/listings/{listing_id}/images"
         return self._issue_request(uri)
 
-    def upload_listing_image(self):
-        raise NotImplementedError
+    def upload_listing_image(
+        self,
+        shop_id: int,
+        listing_id: int,
+        listing_image: UploadListingImageRequest
+    ):
+        uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/images"
+        return self._issue_request(uri, method=Method.POST, request_payload=listing_image)
 
     def get_listing_inventory(self, listing_id):
         uri = f"{ETSY_API_BASEURL}/listings/{listing_id}/inventory"

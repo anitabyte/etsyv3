@@ -281,3 +281,38 @@ class UpdateVariationImagesRequest(Request):
         for variation_image in variation_images:
             variation_image.pop("value", None)
         return UpdateVariationImagesRequest(variation_images)
+
+class UploadListingImageRequest(Request):
+    nullable = ["image"]
+    mandatory = []
+
+    def __init__(
+        self,
+        image_bytes: bytes,
+        listing_image_id=None,
+        rank=None,
+        overwrite=None,
+        is_watermarked=None,
+        alt_text=None,
+    ):
+        self.image = {
+            "image": image_bytes
+        }
+        self.data = {
+            "listing_image_id": listing_image_id,
+            "rank": rank,
+            "overwrite": overwrite,
+            "is_watermarked": is_watermarked,
+            "alt_text": alt_text,
+        }
+        
+        super().__init__(
+            nullable=UploadListingImageRequest.nullable,
+            mandatory=UploadListingImageRequest.mandatory,
+        )
+    
+    @staticmethod
+    def generate_image_bytes_from_file(file):
+        with open(file, "rb") as image:
+            image_bytes = image.read()
+        return image_bytes
