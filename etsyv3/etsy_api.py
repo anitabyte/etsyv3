@@ -8,6 +8,7 @@ from etsyv3.models import ListingFile, ListingProperty, Request, UpdateListingRe
 from etsyv3.models.listing_request import (
     CreateDraftListingRequest,
     UpdateListingInventoryRequest,
+    UpdateListingPropertyRequest,
     UpdateVariationImagesRequest,
     UploadListingImageRequest,
 )
@@ -286,10 +287,10 @@ class EtsyAPI:
         shop_id: int,
         listing_id: int,
         property_id: int,
-        listing_property: ListingProperty,
+        listing_property: UpdateListingPropertyRequest,
     ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/properties/{property_id}"
-        raise NotImplementedError
+        return self._issue_request(uri, method=Method.PUT, request_payload=listing_property)
 
     def get_listing_property(self, listing_id: int, property_id: int):
         # not in production yet
