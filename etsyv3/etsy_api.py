@@ -12,6 +12,12 @@ from etsyv3.models.listing_request import (
     UpdateVariationImagesRequest,
     UploadListingImageRequest,
 )
+from etsyv3.models.shop_request import (
+    CreateShopSectionRequest,
+    UpdateShopSectionRequest,
+    UpdateShopRequest
+)
+
 
 ETSY_API_BASEURL = "https://openapi.etsy.com/v3/application/"
 
@@ -592,8 +598,9 @@ class EtsyAPI:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}"
         return self._issue_request(uri)
 
-    def update_shop(self):
-        raise NotImplementedError
+    def update_shop(self, shop_id: int, shop_request: UpdateShopRequest):
+        uri = f"{ETSY_API_BASEURL}/shops/{shop_id}"
+        return self._issue_request(uri, method=Method.PUT, request_payload=shop_request)
 
     def get_shop_by_owner_user_id(self, user_id: int):
         uri = f"{ETSY_API_BASEURL}/users/{user_id}/shops"
@@ -608,8 +615,9 @@ class EtsyAPI:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/production-partners"
         return self._issue_request(uri)
 
-    def create_shop_section(self):
-        raise NotImplementedError
+    def create_shop_section(self, shop_id: int, shop_section_request: CreateShopSectionRequest):
+        uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/sections"
+        return self._issue_request(uri, method=Method.POST, request_payload=shop_section_request)
 
     def get_shop_sections(self, shop_id: int):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/sections"
@@ -623,8 +631,14 @@ class EtsyAPI:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/sections/{shop_section_id}"
         return self._issue_request(uri)
 
-    def update_shop_section(self):
-        raise NotImplementedError
+    def update_shop_section(
+        self,
+        shop_id: int,
+        shop_section_id: int,
+        shop_section_request: UpdateShopSectionRequest
+    ):
+        uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/sections/{shop_section_id}"
+        return self._issue_request(uri, method=Method.PUT, request_payload=shop_section_request)
 
     def get_user(self, user_id):
         uri = f"{ETSY_API_BASEURL}/users/{user_id}"
