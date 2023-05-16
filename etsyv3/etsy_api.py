@@ -210,7 +210,7 @@ class EtsyAPI:
             "offset": offset,
             "sort_on": sort_on.value if sort_on is not None else None,
             "sort_order": sort_order.value if sort_order is not None else None,
-            "includes": [x.value for x in includes] if includes is not None else None,
+            "includes": ",".join([x.value for x in includes]) if includes is not None else None,
         }
         return self._issue_request(uri, **kwargs)
 
@@ -221,7 +221,7 @@ class EtsyAPI:
     def get_listing(self, listing_id: int, includes: List[Includes] = None):
         uri = f"{ETSY_API_BASEURL}/listings/{listing_id}"
         kwargs = {
-            "includes": [x.value for x in includes] if includes is not None else None
+            "includes": ",".join([x.value for x in includes]) if includes is not None else None
         }
         return self._issue_request(uri, **kwargs)
 
@@ -274,8 +274,8 @@ class EtsyAPI:
     ):
         uri = f"{ETSY_API_BASEURL}/listings/batch"
         kwargs = {
-            "listing_ids": listing_ids,
-            "includes": [x.value for x in includes] if includes is not None else None,
+            "listing_ids": ",".join([str(x) for x in listing_ids]) if listing_ids is not None else None,
+            "includes": ",".join([x.value for x in includes]) if includes is not None else None,
         }
         return self._issue_request(uri, **kwargs)
 
@@ -331,7 +331,7 @@ class EtsyAPI:
     ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/shop-sections/listings"
         kwargs = {
-            "shop_section_ids": shop_section_ids,
+            "shop_section_ids": ",".join([str(x) for x in shop_section_ids]) if shop_section_ids is not None else None,
             "limit": limit,
             "offset": offset,
             "sort_on": sort_on.value if sort_on is not None else None,
@@ -464,7 +464,9 @@ class EtsyAPI:
         self, shop_id: int, ledger_entry_ids: List[int]
     ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/payment-account/ledger-entries/payments"
-        kwargs = {"ledger_entry_ids": ledger_entry_ids}
+        kwargs = {
+            "ledger_entry_ids": ",".join([str(x) for x in ledger_entry_ids]) if ledger_entry_ids is not None else None
+        }
         return self._issue_request(uri, **kwargs)
 
     def get_shop_payment_by_receipt_id(self, shop_id: int, receipt_id: int):
@@ -473,7 +475,9 @@ class EtsyAPI:
 
     def get_payments(self, shop_id: int, payment_ids: List[int]):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/payments"
-        kwargs = {"payment_ids": payment_ids}
+        kwargs = {
+            "payment_ids": ",".join([str(x) for x in payment_ids]) if payment_ids is not None else None
+        }
         return self._issue_request(uri, **kwargs)
 
     def get_shop_receipt(self, shop_id: int, receipt_id: int):
