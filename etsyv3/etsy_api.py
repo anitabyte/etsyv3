@@ -12,6 +12,8 @@ from etsyv3.models.listing_request import (
     UpdateVariationImagesRequest,
     UploadListingImageRequest,
 )
+from etsyv3.models.receipt_request import (CreateReceiptShipmentRequest,
+                                           UpdateShopReceiptRequest)
 from etsyv3.models.shop_request import (
     CreateShopSectionRequest,
     UpdateShopSectionRequest,
@@ -484,8 +486,9 @@ class EtsyAPI:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/receipts/{receipt_id}"
         return self._issue_request(uri)
 
-    def update_shop_receipt(self):
-        raise NotImplementedError
+    def update_shop_receipt(self, shop_id: int, receipt_id: int, update_shop_receipt_request: UpdateShopReceiptRequest):
+        uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/receipts/{receipt_id}"
+        return self._issue_request(uri, method=Method.PUT, request_payload=update_shop_receipt_request)
 
     def get_shop_receipts(self, shop_id: int, limit: int = None, offset: int = None, was_paid: bool = True,
                           was_shipped: bool = False, was_canceled: bool = None):
@@ -494,8 +497,9 @@ class EtsyAPI:
                   "was_canceled": was_canceled}
         return self._issue_request(uri, **kwargs)
 
-    def create_receipt_shipment(self):
-        raise NotImplementedError
+    def create_receipt_shipment(self, shop_id: int, receipt_id: int, receipt_shipment_request: CreateReceiptShipmentRequest):
+        uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/receipts/{receipt_id}/tracking"
+        return self._issue_request(uri, method=Method.POST, request_payload=receipt_shipment_request)
 
     def get_shop_receipt_transactions_by_listing(
         self, shop_id: int, listing_id: int, limit: int = None, offset: int = None
