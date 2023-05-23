@@ -1,3 +1,4 @@
+from typing import Union
 from etsyv3.enums import ShippingProvider
 from etsyv3.models.listing_request import Request
 
@@ -9,7 +10,7 @@ class CreateReceiptShipmentRequest(Request):
     def __init__(
         self,
         tracking_code: str = None,
-        carrier_name: ShippingProvider = None,
+        carrier_name: Union[ShippingProvider, str] = None,
         send_bcc: bool = None,
         note_to_buyer: str = None,
     ):
