@@ -24,6 +24,7 @@ class CreateReceiptShipmentRequest(Request):
             mandatory=CreateReceiptShipmentRequest.mandatory,
         )
 
+
 class UpdateShopReceiptRequest(Request):
     nullable = [
         "was_shipped",

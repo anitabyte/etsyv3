@@ -5,19 +5,21 @@ from typing import Callable, List
 import requests
 
 from etsyv3.models import ListingFile, ListingProperty, Request, UpdateListingRequest
+from etsyv3.models.file_request import FileRequest, UploadListingImageRequest, UploadListingFileRequest
 from etsyv3.models.listing_request import (
     CreateDraftListingRequest,
     UpdateListingInventoryRequest,
     UpdateListingPropertyRequest,
     UpdateVariationImagesRequest,
-    UploadListingImageRequest,
 )
-from etsyv3.models.receipt_request import (CreateReceiptShipmentRequest,
-                                           UpdateShopReceiptRequest)
+from etsyv3.models.receipt_request import (
+    CreateReceiptShipmentRequest,
+    UpdateShopReceiptRequest,
+)
 from etsyv3.models.shop_request import (
     CreateShopSectionRequest,
     UpdateShopSectionRequest,
-    UpdateShopRequest
+    UpdateShopRequest,
 )
 
 
@@ -136,20 +138,15 @@ class EtsyAPI:
             method != Method.GET and method != Method.DELETE
         ) and request_payload is None:
             raise ValueError
-        if (
-            datetime.utcnow()
-            < self.expiry
-        ):
+        if datetime.utcnow() < self.expiry:
             if method == Method.GET:
                 uri_full = EtsyAPI._generate_get_uri(uri, **kwargs)
                 return_val = self.session.get(uri_full)
             elif method == method.PUT:
                 return_val = self.session.put(uri, json=request_payload.get_dict())
-            elif method == method.POST and isinstance(request_payload, UploadListingImageRequest):
+            elif method == method.POST and isinstance(request_payload, FileRequest):
                 return_val = self.session.post(
-                    uri,
-                    files=request_payload.image,
-                    data=request_payload.data
+                    uri, files=request_payload.file, data=request_payload.data
                 )
             elif method == method.POST:
                 return_val = self.session.post(uri, json=request_payload.get_dict())
@@ -212,7 +209,9 @@ class EtsyAPI:
             "offset": offset,
             "sort_on": sort_on.value if sort_on is not None else None,
             "sort_order": sort_order.value if sort_order is not None else None,
-            "includes": ",".join([x.value for x in includes]) if includes is not None else None,
+            "includes": ",".join([x.value for x in includes])
+            if includes is not None
+            else None,
         }
         return self._issue_request(uri, **kwargs)
 
@@ -223,7 +222,9 @@ class EtsyAPI:
     def get_listing(self, listing_id: int, includes: List[Includes] = None):
         uri = f"{ETSY_API_BASEURL}/listings/{listing_id}"
         kwargs = {
-            "includes": ",".join([x.value for x in includes]) if includes is not None else None
+            "includes": ",".join([x.value for x in includes])
+            if includes is not None
+            else None
         }
         return self._issue_request(uri, **kwargs)
 
@@ -276,8 +277,12 @@ class EtsyAPI:
     ):
         uri = f"{ETSY_API_BASEURL}/listings/batch"
         kwargs = {
-            "listing_ids": ",".join([str(x) for x in listing_ids]) if listing_ids is not None else None,
-            "includes": ",".join([x.value for x in includes]) if includes is not None else None,
+            "listing_ids": ",".join([str(x) for x in listing_ids])
+            if listing_ids is not None
+            else None,
+            "includes": ",".join([x.value for x in includes])
+            if includes is not None
+            else None,
         }
         return self._issue_request(uri, **kwargs)
 
@@ -298,7 +303,9 @@ class EtsyAPI:
         listing_property: UpdateListingPropertyRequest,
     ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/properties/{property_id}"
-        return self._issue_request(uri, method=Method.PUT, request_payload=listing_property)
+        return self._issue_request(
+            uri, method=Method.PUT, request_payload=listing_property
+        )
 
     def get_listing_property(self, listing_id: int, property_id: int):
         # not in production yet
@@ -333,7 +340,9 @@ class EtsyAPI:
     ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/shop-sections/listings"
         kwargs = {
-            "shop_section_ids": ",".join([str(x) for x in shop_section_ids]) if shop_section_ids is not None else None,
+            "shop_section_ids": ",".join([str(x) for x in shop_section_ids])
+            if shop_section_ids is not None
+            else None,
             "limit": limit,
             "offset": offset,
             "sort_on": sort_on.value if sort_on is not None else None,
@@ -354,10 +363,10 @@ class EtsyAPI:
         return self._issue_request(uri)
 
     def upload_listing_file(
-        self, shop_id: int, listing_id: int, listing_file: ListingFile
+        self, shop_id: int, listing_id: int, listing_file: UploadListingFileRequest
     ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/files"
-        raise NotImplementedError
+        return self._issue_request(uri, method=Method.POST, request_payload=listing_file)
 
     def delete_listing_image(
         self, shop_id: int, listing_id: int, listing_image_id: int
@@ -374,13 +383,12 @@ class EtsyAPI:
         return self._issue_request(uri)
 
     def upload_listing_image(
-        self,
-        shop_id: int,
-        listing_id: int,
-        listing_image: UploadListingImageRequest
+        self, shop_id: int, listing_id: int, listing_image: UploadListingImageRequest
     ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/images"
-        return self._issue_request(uri, method=Method.POST, request_payload=listing_image)
+        return self._issue_request(
+            uri, method=Method.POST, request_payload=listing_image
+        )
 
     def get_listing_inventory(self, listing_id):
         uri = f"{ETSY_API_BASEURL}/listings/{listing_id}/inventory"
@@ -467,7 +475,9 @@ class EtsyAPI:
     ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/payment-account/ledger-entries/payments"
         kwargs = {
-            "ledger_entry_ids": ",".join([str(x) for x in ledger_entry_ids]) if ledger_entry_ids is not None else None
+            "ledger_entry_ids": ",".join([str(x) for x in ledger_entry_ids])
+            if ledger_entry_ids is not None
+            else None
         }
         return self._issue_request(uri, **kwargs)
 
@@ -478,7 +488,9 @@ class EtsyAPI:
     def get_payments(self, shop_id: int, payment_ids: List[int]):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/payments"
         kwargs = {
-            "payment_ids": ",".join([str(x) for x in payment_ids]) if payment_ids is not None else None
+            "payment_ids": ",".join([str(x) for x in payment_ids])
+            if payment_ids is not None
+            else None
         }
         return self._issue_request(uri, **kwargs)
 
@@ -486,20 +498,46 @@ class EtsyAPI:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/receipts/{receipt_id}"
         return self._issue_request(uri)
 
-    def update_shop_receipt(self, shop_id: int, receipt_id: int, update_shop_receipt_request: UpdateShopReceiptRequest):
+    def update_shop_receipt(
+        self,
+        shop_id: int,
+        receipt_id: int,
+        update_shop_receipt_request: UpdateShopReceiptRequest,
+    ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/receipts/{receipt_id}"
-        return self._issue_request(uri, method=Method.PUT, request_payload=update_shop_receipt_request)
+        return self._issue_request(
+            uri, method=Method.PUT, request_payload=update_shop_receipt_request
+        )
 
-    def get_shop_receipts(self, shop_id: int, limit: int = None, offset: int = None, was_paid: bool = True,
-                          was_shipped: bool = False, was_canceled: bool = None):
+    def get_shop_receipts(
+        self,
+        shop_id: int,
+        limit: int = None,
+        offset: int = None,
+        was_paid: bool = True,
+        was_shipped: bool = False,
+        was_canceled: bool = None,
+    ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/receipts"
-        kwargs = {"limit": limit, "offset": offset, "was_paid": was_paid, "was_shipped": was_shipped,
-                  "was_canceled": was_canceled}
+        kwargs = {
+            "limit": limit,
+            "offset": offset,
+            "was_paid": was_paid,
+            "was_shipped": was_shipped,
+            "was_canceled": was_canceled,
+        }
         return self._issue_request(uri, **kwargs)
 
-    def create_receipt_shipment(self, shop_id: int, receipt_id: int, receipt_shipment_request: CreateReceiptShipmentRequest):
+    def create_receipt_shipment(
+        self,
+        shop_id: int,
+        receipt_id: int,
+        receipt_shipment_request: CreateReceiptShipmentRequest,
+    ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/receipts/{receipt_id}/tracking"
-        return self._issue_request(uri, method=Method.POST, request_payload=receipt_shipment_request)
+        return self._issue_request(
+            uri, method=Method.POST, request_payload=receipt_shipment_request
+        )
 
     def get_shop_receipt_transactions_by_listing(
         self, shop_id: int, listing_id: int, limit: int = None, offset: int = None
@@ -623,9 +661,13 @@ class EtsyAPI:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/production-partners"
         return self._issue_request(uri)
 
-    def create_shop_section(self, shop_id: int, shop_section_request: CreateShopSectionRequest):
+    def create_shop_section(
+        self, shop_id: int, shop_section_request: CreateShopSectionRequest
+    ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/sections"
-        return self._issue_request(uri, method=Method.POST, request_payload=shop_section_request)
+        return self._issue_request(
+            uri, method=Method.POST, request_payload=shop_section_request
+        )
 
     def get_shop_sections(self, shop_id: int):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/sections"
@@ -643,10 +685,12 @@ class EtsyAPI:
         self,
         shop_id: int,
         shop_section_id: int,
-        shop_section_request: UpdateShopSectionRequest
+        shop_section_request: UpdateShopSectionRequest,
     ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/sections/{shop_section_id}"
-        return self._issue_request(uri, method=Method.PUT, request_payload=shop_section_request)
+        return self._issue_request(
+            uri, method=Method.PUT, request_payload=shop_section_request
+        )
 
     def get_user(self, user_id):
         uri = f"{ETSY_API_BASEURL}/users/{user_id}"

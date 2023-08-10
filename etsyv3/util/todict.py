@@ -6,7 +6,7 @@ def todict(obj, classkey=None, nullable=None):
         nullable = []
     if isinstance(obj, dict):
         data = {}
-        for (k, v) in obj.items():
+        for k, v in obj.items():
             data[k] = todict(v, classkey)
         return data
     elif Enum in obj.__class__.__mro__:
@@ -16,9 +16,10 @@ def todict(obj, classkey=None, nullable=None):
     elif hasattr(obj, "__iter__") and not isinstance(obj, str):
         return [todict(v, classkey) for v in obj]
     elif hasattr(obj, "__dict__"):
+        # I hate this, but it's a way around the reserved name 'type' for now
         data = dict(
             [
-                (key, todict(value, classkey))
+                (key if key != "listing_type" else "type", todict(value, classkey))
                 if key not in nullable and value not in [[], "" or 0]
                 else (key, None)
                 for key, value in obj.__dict__.items()
