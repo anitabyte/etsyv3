@@ -5,7 +5,11 @@ from typing import Callable, List
 import requests
 
 from etsyv3.models import ListingFile, ListingProperty, Request, UpdateListingRequest
-from etsyv3.models.file_request import FileRequest, UploadListingImageRequest, UploadListingFileRequest
+from etsyv3.models.file_request import (
+    FileRequest,
+    UploadListingImageRequest,
+    UploadListingFileRequest,
+)
 from etsyv3.models.listing_request import (
     CreateDraftListingRequest,
     UpdateListingInventoryRequest,
@@ -366,7 +370,9 @@ class EtsyAPI:
         self, shop_id: int, listing_id: int, listing_file: UploadListingFileRequest
     ):
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/files"
-        return self._issue_request(uri, method=Method.POST, request_payload=listing_file)
+        return self._issue_request(
+            uri, method=Method.POST, request_payload=listing_file
+        )
 
     def delete_listing_image(
         self, shop_id: int, listing_id: int, listing_image_id: int

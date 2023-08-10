@@ -44,19 +44,9 @@ class UploadListingFileRequest(FileRequest):
     nullable = ["file"]
     mandatory = []
 
-    def __init__(
-        self,
-        file_bytes: bytes,
-        listing_file_id=None,
-        name=None,
-        rank=None
-    ):
-        self.file = {"file": (name, file_bytes, 'multipart/form-data')}
-        self.data = {
-            "listing_file_id": listing_file_id,
-            "rank": rank,
-            "name": name
-        }
+    def __init__(self, file_bytes: bytes, listing_file_id=None, name=None, rank=None):
+        self.file = {"file": (name, file_bytes, "multipart/form-data")}
+        self.data = {"listing_file_id": listing_file_id, "rank": rank, "name": name}
 
         super().__init__(
             nullable=UploadListingFileRequest.nullable,
