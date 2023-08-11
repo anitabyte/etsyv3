@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "etsyv3"
-version = "0.0.3"
+version = "0.0.6"
 authors = [
     { name = "anitabyte", email = "anita@anitabyte.xyz" },
 ]
@@ -30,7 +30,9 @@ test = [
     'black',
     'isort',
     'mypy',
-    'types-requests'
+    'types-requests',
+    'build',
+    'twine'
 ]
 
 [tool.setuptools]
