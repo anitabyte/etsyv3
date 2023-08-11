@@ -93,7 +93,7 @@ def refresh_save(access_token, refresh_token, expires_at):
 | DeleteListingFile                                   | ✔️                         |
 | GetListingFile                                      | ✔️                         |
 | GetAllListingFiles                                  | ✔️                         |
-| UploadListingFile                                   | ❌                          |
+| UploadListingFile                                   | ✔️                         |
 | DeleteListingImage                                  | ✔️                         |
 | GetListingImage                                     | ✔️                         |
 | GetListingImages                                    | ✔️                         |

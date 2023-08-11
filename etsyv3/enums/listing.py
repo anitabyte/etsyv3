@@ -24,7 +24,7 @@ class WhoMade(Enum):
 
 class WhenMade(Enum):
     MADE_TO_ORDER = "made_to_order"
-    TWENTY_TWENTIES = "2020_2022"
+    TWENTY_TWENTIES = "2020_2023"
     TWENTY_TENS = "2010_2019"
     TWENTY_OH_THREE_TO_NINE = "2003_2009"
     BEFORE_2003 = "before_2003"
