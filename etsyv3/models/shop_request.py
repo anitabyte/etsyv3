@@ -1,9 +1,11 @@
+from typing import List, Optional
+
 from etsyv3.models.listing_request import Request
 
 
 class CreateShopSectionRequest(Request):
-    nullable = []
-    mandatory = ["title"]
+    nullable: List[str] = []
+    mandatory: List[str] = ["title"]
 
     def __init__(self, title: str):
         self.title = title
@@ -15,8 +17,8 @@ class CreateShopSectionRequest(Request):
 
 
 class UpdateShopSectionRequest(Request):
-    nullable = []
-    mandatory = ["title"]
+    nullable: List[str] = []
+    mandatory: List[str] = ["title"]
 
     def __init__(self, title: str):
         self.title = title
@@ -28,16 +30,16 @@ class UpdateShopSectionRequest(Request):
 
 
 class UpdateShopRequest(Request):
-    nullable = []
-    mandatory = []
+    nullable: List[str] = []
+    mandatory: List[str] = []
 
     def __init__(
         self,
-        title: str = None,
-        announcement: str = None,
-        sale_message: str = None,
-        digital_sale_message: str = None,
-        policy_additional: str = None,
+        title: Optional[str] = None,
+        announcement: Optional[str] = None,
+        sale_message: Optional[str] = None,
+        digital_sale_message: Optional[str] = None,
+        policy_additional: Optional[str] = None,
     ):
         self.title = title
         self.announcement = announcement

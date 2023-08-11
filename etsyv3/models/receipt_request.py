@@ -1,18 +1,19 @@
-from typing import Union
+from typing import List, Optional, Union
+
 from etsyv3.enums import ShippingProvider
 from etsyv3.models.listing_request import Request
 
 
 class CreateReceiptShipmentRequest(Request):
-    nullable = []
-    mandatory = []
+    nullable: List[str] = []
+    mandatory: List[str] = []
 
     def __init__(
         self,
-        tracking_code: str = None,
-        carrier_name: Union[ShippingProvider, str] = None,
-        send_bcc: bool = None,
-        note_to_buyer: str = None,
+        tracking_code: Optional[str] = None,
+        carrier_name: Optional[Union[ShippingProvider, str]] = None,
+        send_bcc: Optional[bool] = None,
+        note_to_buyer: Optional[str] = None,
     ):
         self.tracking_code = tracking_code
         self.carrier_name = carrier_name
@@ -26,16 +27,16 @@ class CreateReceiptShipmentRequest(Request):
 
 
 class UpdateShopReceiptRequest(Request):
-    nullable = [
+    nullable: List[str] = [
         "was_shipped",
         "was_paid",
     ]
-    mandatory = []
+    mandatory: List[str] = []
 
     def __init__(
         self,
-        was_shipped: bool = None,
-        was_paid: bool = None,
+        was_shipped: Optional[bool] = None,
+        was_paid: Optional[bool] = None,
     ):
         self.was_shipped = was_shipped
         self.was_paid = was_paid

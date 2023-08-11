@@ -1,7 +1,10 @@
 from enum import Enum
+from typing import Any, Dict, List, Optional
 
 
-def todict(obj, classkey=None, nullable=None):
+def todict(
+    obj: Any, classkey: Optional[str] = None, nullable: Optional[List[str]] = None
+) -> Any:
     if nullable is None:
         nullable = []
     if isinstance(obj, dict):

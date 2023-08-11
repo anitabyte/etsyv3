@@ -28,7 +28,9 @@ test = [
     'pytest',
     'pytest-benchmark[histogram]>=3.2.1',
     'black',
-    'isort'
+    'isort',
+    'mypy',
+    'types-requests'
 ]
 
 [tool.setuptools]

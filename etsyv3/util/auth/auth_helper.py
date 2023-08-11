@@ -1,13 +1,19 @@
 import base64
 import hashlib
 import secrets
+from typing import List, Optional, Tuple
 
-from requests_oauthlib import OAuth2Session
+from requests_oauthlib import OAuth2Session  # type: ignore[import]
 
 
 class AuthHelper:
     def __init__(
-        self, keystring, redirect_uri, scopes=None, code_verifier=None, state=None
+        self,
+        keystring: str,
+        redirect_uri: str,
+        scopes: Optional[List[str]] = None,
+        code_verifier: Optional[str] = None,
+        state: Optional[str] = None,
     ):
         self.keystring = keystring
         self.redirect_url = redirect_uri
@@ -21,10 +27,10 @@ class AuthHelper:
             keystring, redirect_uri=self.redirect_url, scope=scopes
         )
         self.state = secrets.token_urlsafe(16) if state is None else state
-        self.auth_code = None
-        self.token = None
+        self.auth_code: Optional[str] = None
+        self.token: Optional[str] = None
 
-    def get_auth_code(self):
+    def get_auth_code(self) -> Tuple[str, str]:
         authorisation_url, state = self.oauth.authorization_url(
             "https://www.etsy.com/oauth/connect",
             state=self.state,
@@ -33,13 +39,13 @@ class AuthHelper:
         )
         return authorisation_url, state
 
-    def set_authorisation_code(self, code, state):
+    def set_authorisation_code(self, code: str, state: str) -> None:
         if state == self.state:
             self.auth_code = code
         else:
             raise
 
-    def get_access_token(self):
+    def get_access_token(self) -> Optional[str]:
         headers = {
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
@@ -55,7 +61,7 @@ class AuthHelper:
         return self.token
 
     @staticmethod
-    def _generate_challenge(code_verifier):
+    def _generate_challenge(code_verifier: str) -> str:
         m = hashlib.sha256(code_verifier.encode("utf-8"))
         b64_encode = base64.urlsafe_b64encode(m.digest()).decode("utf-8")
         # per https://docs.python.org/3/library/base64.html, there may be a trailing '=' - get rid of it

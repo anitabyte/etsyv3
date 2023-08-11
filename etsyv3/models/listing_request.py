@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from enum import Enum
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from etsyv3.enums import (
     ItemDimensionsUnit,
@@ -14,15 +16,19 @@ from etsyv3.util import todict
 
 
 class Request:
-    def __init__(self, nullable: List[str] = None, mandatory: List[str] = None):
-        self._nullable = nullable
-        self._mandatory = mandatory
+    def __init__(
+        self,
+        nullable: Optional[List[str]] = None,
+        mandatory: Optional[List[str]] = None,
+    ):
+        self._nullable = nullable if nullable is not None else []
+        self._mandatory = mandatory if mandatory is not None else []
         if not self.check_mandatory():
             raise ValueError
 
     def check_mandatory(self) -> bool:
-        if self.mandatory is not None:
-            for key in self.mandatory:
+        if self._mandatory is not None:
+            for key in self._mandatory:
                 try:
                     if self.__dict__[key] is None:
                         return False
@@ -37,7 +43,7 @@ class Request:
             if key in self._nullable and (value == [] or value == "" or value == 0)
         ]
 
-    def get_dict(self) -> Dict[str, Any]:
+    def get_dict(self) -> Any:
         nulled = self.get_nulled()
         return todict(self, nullable=nulled)
 
@@ -72,37 +78,37 @@ class CreateDraftListingRequest(Request):
 
     def __init__(
         self,
-        quantity: int = None,
-        title: str = None,
-        description: str = None,
-        price: float = None,
-        who_made: WhoMade = None,
-        when_made: WhenMade = None,
-        taxonomy_id: int = None,
-        shipping_profile_id: int = None,
-        materials: List[str] = None,
-        shop_section_id: int = None,
-        processing_min: int = None,
-        processing_max: int = None,
-        tags: List[str] = None,
-        styles: List[str] = None,
-        item_weight: float = None,
-        item_length: float = None,
-        item_width: float = None,
-        item_height: float = None,
-        item_weight_unit: ItemWeightUnit = None,
-        item_dimensions_unit: ItemDimensionsUnit = None,
-        is_personalizable: bool = None,
-        personalization_is_required: bool = None,
-        personalization_char_count_max: int = None,
-        personalization_instructions: str = None,
-        production_partner_ids: int = None,
-        image_ids: List[int] = None,
-        is_supply: bool = None,
-        is_customizable: bool = None,
-        should_auto_renew: bool = None,
-        is_taxable: bool = None,
-        listing_type: ListingType = None,
+        quantity: Optional[int] = None,
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+        price: Optional[float] = None,
+        who_made: Optional[WhoMade] = None,
+        when_made: Optional[WhenMade] = None,
+        taxonomy_id: Optional[int] = None,
+        shipping_profile_id: Optional[int] = None,
+        materials: Optional[List[str]] = None,
+        shop_section_id: Optional[int] = None,
+        processing_min: Optional[int] = None,
+        processing_max: Optional[int] = None,
+        tags: Optional[List[str]] = None,
+        styles: Optional[List[str]] = None,
+        item_weight: Optional[float] = None,
+        item_length: Optional[float] = None,
+        item_width: Optional[float] = None,
+        item_height: Optional[float] = None,
+        item_weight_unit: Optional[ItemWeightUnit] = None,
+        item_dimensions_unit: Optional[ItemDimensionsUnit] = None,
+        is_personalizable: Optional[bool] = None,
+        personalization_is_required: Optional[bool] = None,
+        personalization_char_count_max: Optional[int] = None,
+        personalization_instructions: Optional[str] = None,
+        production_partner_ids: Optional[int] = None,
+        image_ids: Optional[List[int]] = None,
+        is_supply: Optional[bool] = None,
+        is_customizable: Optional[bool] = None,
+        should_auto_renew: Optional[bool] = None,
+        is_taxable: Optional[bool] = None,
+        listing_type: Optional[ListingType] = None,
     ):
         self.quantity = quantity
         self.title = title
@@ -142,7 +148,7 @@ class CreateDraftListingRequest(Request):
 
 
 class UpdateListingRequest(Request):
-    nullable = [
+    nullable: List[str] = [
         "materials",
         "shipping_profile_id",
         "shop_section_id",
@@ -158,37 +164,37 @@ class UpdateListingRequest(Request):
         "type",
     ]
 
-    mandatory = []
+    mandatory: List[str] = []
 
     def __init__(
         self,
-        image_ids: List[str] = None,
-        title: str = None,
-        description: str = None,
-        materials: List[str] = None,
-        should_auto_renew: bool = None,
-        shipping_profile_id: int = None,
-        shop_section_id: int = None,
-        item_weight: float = None,
-        item_length: float = None,
-        item_width: float = None,
-        item_height: float = None,
-        item_weight_unit: ItemWeightUnit = None,
-        item_dimensions_unit: ItemDimensionsUnit = None,
-        is_taxable: bool = None,
-        taxonomy_id: int = None,
-        tags: List[str] = None,
-        who_made: WhoMade = None,
-        when_made: WhenMade = None,
-        featured_rank: int = None,
-        is_personalizable: bool = None,
-        personalization_is_required: bool = None,
-        personalization_char_count_max: int = None,
-        personalization_instructions: str = None,
-        state: ListingRequestState = None,
-        is_supply: bool = None,
-        production_partner_ids: List[int] = None,
-        listing_type: ListingType = None,
+        image_ids: Optional[List[str]] = None,
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+        materials: Optional[List[str]] = None,
+        should_auto_renew: Optional[bool] = None,
+        shipping_profile_id: Optional[int] = None,
+        shop_section_id: Optional[int] = None,
+        item_weight: Optional[float] = None,
+        item_length: Optional[float] = None,
+        item_width: Optional[float] = None,
+        item_height: Optional[float] = None,
+        item_weight_unit: Optional[ItemWeightUnit] = None,
+        item_dimensions_unit: Optional[ItemDimensionsUnit] = None,
+        is_taxable: Optional[bool] = None,
+        taxonomy_id: Optional[int] = None,
+        tags: Optional[List[str]] = None,
+        who_made: Optional[WhoMade] = None,
+        when_made: Optional[WhenMade] = None,
+        featured_rank: Optional[int] = None,
+        is_personalizable: Optional[bool] = None,
+        personalization_is_required: Optional[bool] = None,
+        personalization_char_count_max: Optional[int] = None,
+        personalization_instructions: Optional[str] = None,
+        state: Optional[ListingRequestState] = None,
+        is_supply: Optional[bool] = None,
+        production_partner_ids: Optional[List[int]] = None,
+        listing_type: Optional[ListingType] = None,
     ):
         self.image_ids = image_ids
         self.title = title
@@ -221,15 +227,15 @@ class UpdateListingRequest(Request):
 
 
 class UpdateListingInventoryRequest(Request):
-    nullable = []
-    mandatory = ["products"]
+    nullable: List[str] = []
+    mandatory: List[str] = ["products"]
 
     def __init__(
         self,
         products: List[Product],
-        price_on_property=None,
-        quantity_on_property=None,
-        sku_on_property=None,
+        price_on_property: Optional[List[int]] = None,
+        quantity_on_property: Optional[List[int]] = None,
+        sku_on_property: Optional[List[int]] = None,
     ):
         self.products = products
         self.price_on_property = price_on_property
@@ -241,7 +247,9 @@ class UpdateListingInventoryRequest(Request):
         )
 
     @staticmethod
-    def generate_request_from_inventory_response(response):
+    def generate_request_from_inventory_response(
+        response: Dict[str, Any]
+    ) -> UpdateListingInventoryRequest:
         products = []
         for product in response["products"]:
             property_values = product["property_values"]
@@ -265,10 +273,10 @@ class UpdateListingInventoryRequest(Request):
 
 
 class UpdateVariationImagesRequest(Request):
-    nullable = []
-    mandatory = []
+    nullable: List[str] = []
+    mandatory: List[str] = []
 
-    def __init__(self, variation_images: List[Dict[str, Any]]):
+    def __init__(self, variation_images: List[Dict[str, Any]]) -> None:
         self.variation_images = variation_images
         super().__init__(
             nullable=UpdateVariationImagesRequest.nullable,
@@ -276,7 +284,9 @@ class UpdateVariationImagesRequest(Request):
         )
 
     @staticmethod
-    def generate_request_from_variation_images_response(response):
+    def generate_request_from_variation_images_response(
+        response: Dict[str, Any]
+    ) -> UpdateVariationImagesRequest:
         variation_images = response["results"]
         for variation_image in variation_images:
             variation_image.pop("value", None)
@@ -284,18 +294,18 @@ class UpdateVariationImagesRequest(Request):
 
 
 class UpdateListingPropertyRequest(Request):
-    nullable = []
+    nullable: List[str] = []
 
-    mandatory = [
+    mandatory: List[str] = [
         "value_ids",
         "values",
     ]
 
     def __init__(
         self,
-        value_ids: List[int] = None,
-        values: List[str] = None,
-        scale_id: int = None,
+        value_ids: Optional[List[int]] = None,
+        values: Optional[List[str]] = None,
+        scale_id: Optional[int] = None,
     ):
         self.value_ids = value_ids
         self.values = values
