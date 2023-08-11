@@ -172,6 +172,8 @@ class EtsyAPI:
                 raise NotFound(return_val.json())
             elif return_val.status_code == 500:
                 raise InternalError(return_val.json())
+            elif return_val.status_code == 204:
+                return {"status": "OK"}
             return return_val.json()
 
         else:
