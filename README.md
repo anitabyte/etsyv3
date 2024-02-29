@@ -84,10 +84,10 @@ def refresh_save(access_token, refresh_token, expires_at):
 | GetListingsByListingIds                             | ✔️                         |
 | GetFeaturedListingsByShop                           | ✔️                         |
 | DeleteListingProperty                               | ✔️                         |
-| UpdateListingProperty                               | ✔️                          |
-| GetListingProperty                                  | ❌ (501 only from Etsy)     |
+| UpdateListingProperty                               | ✔️                         |
+| GetListingProperty                                  | ❌ (501 only from Etsy)    |
 | GetListingProperties                                | ✔️                         |
-| UpdateListing                                       | ✔️                          |
+| UpdateListing                                       | ✔️                         |
 | GetListingsByShopReceipt                            | ✔️                         |
 | GetListingsByShopSectionId                          | ✔️                         |
 | DeleteListingFile                                   | ✔️                         |
@@ -97,14 +97,18 @@ def refresh_save(access_token, refresh_token, expires_at):
 | DeleteListingImage                                  | ✔️                         |
 | GetListingImage                                     | ✔️                         |
 | GetListingImages                                    | ✔️                         |
-| UploadListingImage                                  | ✔️                           |
+| UploadListingImage                                  | ✔️                         |
+| DeleteListingVideo                                  | ✔️                         |
+| GetListingVideo                                     | ✔️                         |
+| GetListingVideos                                    | ✔️                         |
+| UploadListingVideo                                  | ✔️                         |
 | GetListingInventory                                 | ✔️                         |
 | UpdateListingInventory                              | ✔️                         |
 | GetListingOffering                                  | ✔️                         |
 | GetListingProduct                                   | ✔️                         |
-| CreateListingTranslation                            | ❌                          |
+| CreateListingTranslation                            | ❌                         |
 | GetListingTranslation                               | ✔️                         |
-| UpdateListingTranslation                            | ❌                          |
+| UpdateListingTranslation                            | ❌                         |
 | GetListingVariationImages                           | ✔️                         |
 | UpdateVariationImages                               | ✔️                         |
 | Ping                                                | ✔️                         |
@@ -114,10 +118,10 @@ def refresh_save(access_token, refresh_token, expires_at):
 | GetPaymentAccountLedgerEntryPayments                | ✔️                         |
 | GetShopPaymentByReceiptId                           | ✔️                         |
 | GetPayments                                         | ✔️                         |
-| GetShopReceipt                                      | ✔️ ️                       |
-| UpdateShopReceipt                                   | ❌️ ️                       |
-| GetShopReceipts                                     | ✔️ ️                       |
-| CreateReceiptShipment                               | ❌                          |
+| GetShopReceipt                                      | ✔️                         |
+| UpdateShopReceipt                                   | ❌️                         |
+| GetShopReceipts                                     | ✔️                         |
+| CreateReceiptShipment                               | ❌                         |
 | GetShopReceiptTransactionsByListing                 | ✔️                         |
 | GetShopReceiptTransactionsByReceipt                 | ✔️                         |
 | GetShopReceiptTransaction                           | ✔️                         |
@@ -125,31 +129,31 @@ def refresh_save(access_token, refresh_token, expires_at):
 | GetReviewsByListing                                 | ✔️                         |
 | GetReviewsByShop                                    | ✔️                         |
 | GetShippingCarriers                                 | ✔️                         |
-| CreateShopShippingProfile                           | ❌                          |
+| CreateShopShippingProfile                           | ❌                         |
 | GetShopShippingProfiles                             | ✔️                         |
 | DeleteShopShippingProfile                           | ✔️                         |
 | GetShopShippingProfile                              | ✔️                         |
-| UpdateShopShippingProfile                           | ❌                          |
-| CreateShopShippingProfileDestination                | ❌                          |
+| UpdateShopShippingProfile                           | ❌                         |
+| CreateShopShippingProfileDestination                | ❌                         |
 | GetShopShippingProfileDestinationsByShippingProfile | ✔️                         |
 | DeleteShopShippingProfileDestination                | ✔️                         |
-| UpdateShopShippingProfileDestination                | ❌                          |
-| CreateShopShippingProfileUpgrade                    | ❌                          |
+| UpdateShopShippingProfileDestination                | ❌                         |
+| CreateShopShippingProfileUpgrade                    | ❌                         |
 | GetShopShippingProfileUpgrades                      | ✔️                         |
 | DeleteShopShippingProfileUpgrade                    | ✔️                         |
-| UpdateShopShippingProfileUpgrade                    | ❌                          |
+| UpdateShopShippingProfileUpgrade                    | ❌                         |
 | GetShop                                             | ✔️                         |
-| UpdateShop                                          | ❌                          |
+| UpdateShop                                          | ❌                         |
 | GetShopByOwnerUserId                                | ✔️                         |
 | FindShops                                           | ✔️                         |
 | GetShopProductionPartners                           | ✔️                         |
-| CreateShopSection                                   | ❌                          |
+| CreateShopSection                                   | ❌                         |
 | GetShopSections                                     | ✔️                         |
 | DeleteShopSection                                   | ✔️                         |
 | GetShopSection                                      | ✔️                         |
-| UpdateShopSection                                   | ❌                          |
-| GetUser                                             | ✔️ ️                       |
-| DeleteUserAddress                                   | ❌                          |
+| UpdateShopSection                                   | ❌                         |
+| GetUser                                             | ✔️                         |
+| DeleteUserAddress                                   | ❌                         |
 | GetUserAddress                                      | ❌ (Etsy only returns a 501) |
 | GetUserAddresses                                    | ✔️                         |
 
