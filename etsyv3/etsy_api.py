@@ -10,6 +10,7 @@ from etsyv3.models.file_request import (
     FileRequest,
     UploadListingFileRequest,
     UploadListingImageRequest,
+    UploadListingVideoRequest,
 )
 from etsyv3.models.listing_request import (
     CreateDraftListingRequest,
@@ -393,6 +394,28 @@ class EtsyAPI:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/files"
         return self._issue_request(
             uri, method=Method.POST, request_payload=listing_file
+        )
+
+    def delete_listing_video(
+        self, shop_id: int, listing_id: int, listing_video_id: int
+    ) -> Any:
+        uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/videos/{listing_video_id}"
+        return self._issue_request(uri, method=Method.DELETE)
+
+    def get_listing_video(self, listing_id: int, listing_video_id: int) -> Any:
+        uri = f"{ETSY_API_BASEURL}/listings/{listing_id}/videos/{listing_video_id}"
+        return self._issue_request(uri)
+
+    def get_listing_videos(self, listing_id: int) -> Any:
+        uri = f"{ETSY_API_BASEURL}/listings/{listing_id}/videos"
+        return self._issue_request(uri)
+
+    def upload_listing_video(
+        self, shop_id: int, listing_id: int, listing_video: UploadListingVideoRequest
+    ) -> Any:
+        uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/videos"
+        return self._issue_request(
+            uri, method=Method.POST, request_payload=listing_video
         )
 
     def delete_listing_image(

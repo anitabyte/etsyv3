@@ -66,3 +66,25 @@ class UploadListingFileRequest(FileRequest):
             nullable=UploadListingFileRequest.nullable,
             mandatory=UploadListingFileRequest.mandatory,
         )
+
+
+class UploadListingVideoRequest(FileRequest):
+    nullable: List[str] = ["video"]
+    mandatory: List[str] = []
+
+    def __init__(
+        self,
+        video_bytes: bytes,
+        listing_video_id: Optional[int] = None,
+        name: Optional[str] = None,
+    ) -> None:
+        self.file = {"video": video_bytes}
+        self.data = {
+            "listing_video_id": listing_video_id,
+            "name": name,
+        }
+
+        super().__init__(
+            nullable=UploadListingVideoRequest.nullable,
+            mandatory=UploadListingVideoRequest.mandatory,
+        )
