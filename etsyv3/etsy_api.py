@@ -13,9 +13,11 @@ from etsyv3.models.file_request import (
 )
 from etsyv3.models.listing_request import (
     CreateDraftListingRequest,
+    CreateListingTranslationRequest,
     UpdateListingInventoryRequest,
     UpdateListingPropertyRequest,
     UpdateVariationImagesRequest,
+    UpdateListingTranslationRequest,
 )
 from etsyv3.models.receipt_request import (
     CreateReceiptShipmentRequest,
@@ -439,8 +441,17 @@ class EtsyAPI:
         )
         return self._issue_request(uri)
 
-    def create_listing_translation(self) -> Any:
-        raise NotImplementedError
+    def create_listing_translation(
+        self,
+        shop_id: int,
+        listing_id: int,
+        language: str,
+        listing_translation: CreateListingTranslationRequest,
+    ) -> Any:
+        uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/translations/{language}"
+        return self._issue_request(
+            uri, method=Method.POST, request_payload=listing_translation
+        )
 
     def get_listing_translation(
         self, shop_id: int, listing_id: int, language: str
@@ -448,8 +459,17 @@ class EtsyAPI:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/translations/{language}"
         return self._issue_request(uri)
 
-    def update_listing_translation(self) -> Any:
-        raise NotImplementedError
+    def update_listing_translation(
+        self,
+        shop_id: int,
+        listing_id: int,
+        language: str,
+        listing_translation: UpdateListingTranslationRequest,
+    ) -> Any:
+        uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/translations/{language}"
+        return self._issue_request(
+            uri, method=Method.PUT, request_payload=listing_translation
+        )
 
     def get_listing_variation_images(self, shop_id: int, listing_id: int) -> Any:
         uri = (
