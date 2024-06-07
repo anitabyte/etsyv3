@@ -16,6 +16,7 @@ from etsyv3.models.listing_request import (
     UpdateListingInventoryRequest,
     UpdateListingPropertyRequest,
     UpdateVariationImagesRequest,
+    UpdateListingImageIDRequest,
 )
 from etsyv3.models.receipt_request import (
     CreateReceiptShipmentRequest,
@@ -415,6 +416,14 @@ class EtsyAPI:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/images"
         return self._issue_request(
             uri, method=Method.POST, request_payload=listing_image
+        )
+    
+    def update_listing_image_id(
+        self, shop_id: int, listing_id: int, listing_image_id: UpdateListingImageIDRequest
+    ) -> Any:
+        uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/images"
+        return self._issue_request(
+            uri, method=Method.POST, request_payload=listing_image_id
         )
 
     def get_listing_inventory(self, listing_id: int) -> Any:
