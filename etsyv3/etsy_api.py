@@ -27,8 +27,8 @@ from etsyv3.models.shop_request import (
     UpdateShopSectionRequest,
 )
 
-ETSY_API_BASEURL = "https://openapi.etsy.com/v3/application/"
-
+# From spec at https://developers.etsy.com/documentation/essentials/urlsyntax
+ETSY_API_BASEURL = "https://api.etsy.com/v3/application"
 
 class ExpiredToken(Exception):
     pass
