@@ -292,6 +292,30 @@ class UpdateVariationImagesRequest(Request):
             variation_image.pop("value", None)
         return UpdateVariationImagesRequest(variation_images)
 
+class UpdateListingImageIDRequest(Request):
+    nullable: List[str] = []
+    mandatory: List[str] = ["listing_image_id"]
+
+    def __init__(
+        self,
+        listing_image_id: int,
+        rank: Optional[int] = None,
+        overwrite: Optional[bool] = None,
+        is_watermarked: Optional[bool] = None,
+        alt_text: Optional[str] = None,
+    ) -> None:
+
+        self.listing_image_id = listing_image_id
+        self.rank = rank
+        self.overwrite = overwrite
+        self.is_watermarked = is_watermarked
+        self.alt_text = alt_text
+
+        super().__init__(
+            nullable=UpdateListingImageIDRequest.nullable,
+            mandatory=UpdateListingImageIDRequest.mandatory,
+        )
+
 
 class UpdateListingPropertyRequest(Request):
     nullable: List[str] = []
