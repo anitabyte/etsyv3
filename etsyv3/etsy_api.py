@@ -557,6 +557,13 @@ class EtsyAPI:
         was_paid: bool = True,
         was_shipped: bool = False,
         was_canceled: Optional[bool] = None,
+        min_created: Optional[int] = None,
+        max_created: Optional[int] = None,
+        min_last_modified: Optional[int] = None,
+        max_last_modified: Optional[int] = None,
+        sort_on: Optional[str] = None,
+        sort_order: Optional[str] = None,
+        was_delivered: Optional[bool] = None,
     ) -> Any:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/receipts"
         kwargs: Dict[str, Any] = {
@@ -565,6 +572,13 @@ class EtsyAPI:
             "was_paid": was_paid,
             "was_shipped": was_shipped,
             "was_canceled": was_canceled,
+            "min_created": min_created,
+            "max_created": max_created,
+            "min_last_modified": min_last_modified,
+            "max_last_modified": max_last_modified,
+            "sort_on": sort_on,
+            "sort_order": sort_order,
+            "was_delivered": was_delivered,
         }
         return self._issue_request(uri, **kwargs)
 
