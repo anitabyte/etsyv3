@@ -20,7 +20,6 @@ from etsyv3.models.listing_request import (
     UpdateVariationImagesRequest,
     UpdateListingTranslationRequest,
     UpdateListingImageIDRequest,
-    UpdateListingTranslationRequest,
 )
 from etsyv3.models.receipt_request import (
     CreateReceiptShipmentRequest,
