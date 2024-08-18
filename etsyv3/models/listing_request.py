@@ -147,6 +147,30 @@ class CreateDraftListingRequest(Request):
         )
 
 
+class CreateListingTranslationRequest(Request):
+    nullable: List[str] = [
+        "tags"
+    ]
+    mandatory: List[str] = [
+        "title",
+        "description"
+    ]
+
+    def __init__(
+        self,
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+        tags: Optional[List[str]] = None,
+    ):
+        self.title = title
+        self.description = description
+        self.tags = tags
+        super().__init__(
+            nullable=CreateListingTranslationRequest.nullable,
+            mandatory=CreateListingTranslationRequest.mandatory,
+        )
+
+
 class UpdateListingRequest(Request):
     nullable: List[str] = [
         "materials",
@@ -337,4 +361,28 @@ class UpdateListingPropertyRequest(Request):
         super().__init__(
             nullable=UpdateListingPropertyRequest.nullable,
             mandatory=UpdateListingPropertyRequest.mandatory,
+        )
+
+
+class UpdateListingTranslationRequest(Request):
+    nullable: List[str] = [
+        "tags"
+    ]
+    mandatory: List[str] = [
+        "title",
+        "description"
+    ]
+
+    def __init__(
+        self,
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+        tags: Optional[List[str]] = None,
+    ):
+        self.title = title
+        self.description = description
+        self.tags = tags
+        super().__init__(
+            nullable=UpdateListingTranslationRequest.nullable,
+            mandatory=UpdateListingTranslationRequest.mandatory,
         )
