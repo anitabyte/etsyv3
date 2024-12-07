@@ -146,7 +146,7 @@ class EtsyAPI:
             method != Method.GET and method != Method.DELETE
         ) and request_payload is None:
             raise ValueError
-        if datetime.utcnow() < self.expiry:
+        if datetime.now(self.expiry.tzinfo) < self.expiry:
             if method == Method.GET:
                 uri_full = EtsyAPI._generate_get_uri(uri, **kwargs)
                 return_val = self.session.get(uri_full)
@@ -837,7 +837,7 @@ class EtsyAPI:
         refreshed = r.json()
         self.token = refreshed["access_token"]
         self.refresh_token = refreshed["refresh_token"]
-        tmp_expiry = datetime.utcnow() + timedelta(seconds=refreshed["expires_in"])
+        tmp_expiry = datetime.now(self.expiry.tzinfo) + timedelta(seconds=refreshed["expires_in"])
         self.expiry = tmp_expiry
         self.session.headers["Authorization"] = "Bearer " + self.token
         if self.refresh_save is not None:
