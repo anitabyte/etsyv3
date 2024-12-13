@@ -3,6 +3,7 @@ import hashlib
 import secrets
 from typing import List, Optional, Tuple
 
+from etsyv3 import BadRequest
 from requests_oauthlib import OAuth2Session  # type: ignore[import]
 
 
@@ -43,7 +44,8 @@ class AuthHelper:
         if state == self.state:
             self.auth_code = code
         else:
-            raise
+            # etsy follows RFC 6749, per spec bad state should raise invalid request, https://datatracker.ietf.org/doc/html/rfc6749#section-5.2
+            raise BadRequest({"error": "invalid_request", "error_description": "State mismatch"})
 
     def get_access_token(self) -> Optional[str]:
         headers = {

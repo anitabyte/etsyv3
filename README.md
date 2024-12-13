@@ -9,7 +9,7 @@ Python 3 client for the [Etsy Open API v3](https://developer.etsy.com/documentat
 
 The authorisation flow in v3 of Etsy's API is somewhat different to the flow used in v2. It is the [OAuth 2.0 Authorization Code Grant](https://www.rfc-editor.org/rfc/rfc6749#section-4.1) flow, [documented quite well by Etsy themselves](https://developer.etsy.com/documentation/essentials/authentication/). Make sure you've done the setup at `Requesting an OAuth Token`, in terms of getting your Etsy API keystring and callback URLs set up.
 
-In the `etsyv3.utils.util.auth` package, the `auth_helper.py` module contains a helper class (`AuthHelper`) for the authentication flow. Provided with the keystring, one of the redirect URLs that you've specific in your Etsy app setup, a list of scopes to be provided in this authentication (a list of strings at present, but likely to become a set of `enums` in future), a code verifier string (specified by you) and a state string (also specified by you), it will allow for some simplification of the process.
+In the `etsyv3.util.auth` package, the `auth_helper.py` module contains a helper class (`AuthHelper`) for the authentication flow. Provided with the keystring, one of the redirect URLs that you've specific in your Etsy app setup, a list of scopes to be provided in this authentication (a list of strings at present, but likely to become a set of `enums` in future), a code verifier string (specified by you) and a state string (also specified by you), it will allow for some simplification of the process.
 
 With your initialised `AuthHelper`, the flow looks something like this:
 
