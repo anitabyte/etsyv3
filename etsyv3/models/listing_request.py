@@ -198,6 +198,8 @@ class UpdateListingRequest(Request):
         materials: Optional[List[str]] = None,
         should_auto_renew: Optional[bool] = None,
         shipping_profile_id: Optional[int] = None,
+        processing_min: Optional[int] = None,
+        processing_max: Optional[int] = None,
         shop_section_id: Optional[int] = None,
         item_weight: Optional[float] = None,
         item_length: Optional[float] = None,
@@ -218,7 +220,7 @@ class UpdateListingRequest(Request):
         state: Optional[ListingRequestState] = None,
         is_supply: Optional[bool] = None,
         production_partner_ids: Optional[List[int]] = None,
-        listing_type: Optional[ListingType] = None,
+        listing_type: Optional[ListingType] = None
     ):
         self.image_ids = image_ids
         self.title = title
@@ -226,6 +228,8 @@ class UpdateListingRequest(Request):
         self.materials = materials
         self.should_auto_renew = should_auto_renew
         self.shipping_profile_id = shipping_profile_id
+        self.processing_min = processing_min
+        self.processing_max = processing_max
         self.shop_section_id = shop_section_id
         self.item_weight = item_weight
         self.item_length = item_length
