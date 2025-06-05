@@ -755,6 +755,10 @@ class EtsyAPI:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}"
         return self._issue_request(uri, method=Method.PUT, request_payload=shop_request)
 
+    def get_me(self) -> Any:
+        uri = f"{ETSY_API_BASEURL}/users/me"
+        return self._issue_request(uri)
+
     def get_shop_by_owner_user_id(self, user_id: int) -> Any:
         uri = f"{ETSY_API_BASEURL}/users/{user_id}/shops"
         return self._issue_request(uri)
