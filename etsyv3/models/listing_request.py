@@ -148,13 +148,8 @@ class CreateDraftListingRequest(Request):
 
 
 class CreateListingTranslationRequest(Request):
-    nullable: List[str] = [
-        "tags"
-    ]
-    mandatory: List[str] = [
-        "title",
-        "description"
-    ]
+    nullable: List[str] = ["tags"]
+    mandatory: List[str] = ["title", "description"]
 
     def __init__(
         self,
@@ -220,7 +215,7 @@ class UpdateListingRequest(Request):
         state: Optional[ListingRequestState] = None,
         is_supply: Optional[bool] = None,
         production_partner_ids: Optional[List[int]] = None,
-        listing_type: Optional[ListingType] = None
+        listing_type: Optional[ListingType] = None,
     ):
         self.image_ids = image_ids
         self.title = title
@@ -276,7 +271,7 @@ class UpdateListingInventoryRequest(Request):
 
     @staticmethod
     def generate_request_from_inventory_response(
-        response: Dict[str, Any]
+        response: Dict[str, Any],
     ) -> UpdateListingInventoryRequest:
         products = []
         for product in response["products"]:
@@ -313,12 +308,13 @@ class UpdateVariationImagesRequest(Request):
 
     @staticmethod
     def generate_request_from_variation_images_response(
-        response: Dict[str, Any]
+        response: Dict[str, Any],
     ) -> UpdateVariationImagesRequest:
         variation_images = response["results"]
         for variation_image in variation_images:
             variation_image.pop("value", None)
         return UpdateVariationImagesRequest(variation_images)
+
 
 class UpdateListingImageIDRequest(Request):
     nullable: List[str] = []
@@ -369,13 +365,8 @@ class UpdateListingPropertyRequest(Request):
 
 
 class UpdateListingTranslationRequest(Request):
-    nullable: List[str] = [
-        "tags"
-    ]
-    mandatory: List[str] = [
-        "title",
-        "description"
-    ]
+    nullable: List[str] = ["tags"]
+    mandatory: List[str] = ["title", "description"]
 
     def __init__(
         self,

@@ -22,9 +22,11 @@ def todict(
         # I hate this, but it's a way around the reserved name 'type' for now
         data = dict(
             [
-                (key if key != "listing_type" else "type", todict(value, classkey))
-                if key not in nullable and value not in [[], "" or 0]
-                else (key, None)
+                (
+                    (key if key != "listing_type" else "type", todict(value, classkey))
+                    if key not in nullable and value not in [[], "" or 0]
+                    else (key, None)
+                )
                 for key, value in obj.__dict__.items()
                 if not callable(value) and not key.startswith("_") and value is not None
             ]

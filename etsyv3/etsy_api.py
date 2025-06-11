@@ -34,6 +34,7 @@ from etsyv3.models.shop_request import (
 # From spec at https://developers.etsy.com/documentation/essentials/urlsyntax
 ETSY_API_BASEURL = "https://api.etsy.com/v3/application"
 
+
 class ExpiredToken(Exception):
     pass
 
@@ -224,9 +225,9 @@ class EtsyAPI:
             "offset": offset,
             "sort_on": sort_on.value if sort_on is not None else None,
             "sort_order": sort_order.value if sort_order is not None else None,
-            "includes": ",".join([x.value for x in includes])
-            if includes is not None
-            else None,
+            "includes": (
+                ",".join([x.value for x in includes]) if includes is not None else None
+            ),
         }
         return self._issue_request(uri, **kwargs)
 
@@ -239,9 +240,9 @@ class EtsyAPI:
     ) -> Any:
         uri = f"{ETSY_API_BASEURL}/listings/{listing_id}"
         kwargs: Dict[str, Any] = {
-            "includes": ",".join([x.value for x in includes])
-            if includes is not None
-            else None
+            "includes": (
+                ",".join([x.value for x in includes]) if includes is not None else None
+            )
         }
         return self._issue_request(uri, **kwargs)
 
@@ -294,12 +295,14 @@ class EtsyAPI:
     ) -> Any:
         uri = f"{ETSY_API_BASEURL}/listings/batch"
         kwargs: Dict[str, Any] = {
-            "listing_ids": ",".join([str(x) for x in listing_ids])
-            if listing_ids is not None
-            else None,
-            "includes": ",".join([x.value for x in includes])
-            if includes is not None
-            else None,
+            "listing_ids": (
+                ",".join([str(x) for x in listing_ids])
+                if listing_ids is not None
+                else None
+            ),
+            "includes": (
+                ",".join([x.value for x in includes]) if includes is not None else None
+            ),
         }
         return self._issue_request(uri, **kwargs)
 
@@ -365,9 +368,11 @@ class EtsyAPI:
     ) -> Any:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/shop-sections/listings"
         kwargs: Dict[str, Any] = {
-            "shop_section_ids": ",".join([str(x) for x in shop_section_ids])
-            if shop_section_ids is not None
-            else None,
+            "shop_section_ids": (
+                ",".join([str(x) for x in shop_section_ids])
+                if shop_section_ids is not None
+                else None
+            ),
             "limit": limit,
             "offset": offset,
             "sort_on": sort_on.value if sort_on is not None else None,
@@ -442,9 +447,12 @@ class EtsyAPI:
         return self._issue_request(
             uri, method=Method.POST, request_payload=listing_image
         )
-    
+
     def update_listing_image_id(
-        self, shop_id: int, listing_id: int, listing_image_id: UpdateListingImageIDRequest
+        self,
+        shop_id: int,
+        listing_id: int,
+        listing_image_id: UpdateListingImageIDRequest,
     ) -> Any:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/listings/{listing_id}/images"
         return self._issue_request(
@@ -558,9 +566,11 @@ class EtsyAPI:
     ) -> Any:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/payment-account/ledger-entries/payments"
         kwargs: Dict[str, Any] = {
-            "ledger_entry_ids": ",".join([str(x) for x in ledger_entry_ids])
-            if ledger_entry_ids is not None
-            else None
+            "ledger_entry_ids": (
+                ",".join([str(x) for x in ledger_entry_ids])
+                if ledger_entry_ids is not None
+                else None
+            )
         }
         return self._issue_request(uri, **kwargs)
 
@@ -571,9 +581,11 @@ class EtsyAPI:
     def get_payments(self, shop_id: int, payment_ids: List[int]) -> Any:
         uri = f"{ETSY_API_BASEURL}/shops/{shop_id}/payments"
         kwargs: Dict[str, Any] = {
-            "payment_ids": ",".join([str(x) for x in payment_ids])
-            if payment_ids is not None
-            else None
+            "payment_ids": (
+                ",".join([str(x) for x in payment_ids])
+                if payment_ids is not None
+                else None
+            )
         }
         return self._issue_request(uri, **kwargs)
 
@@ -841,7 +853,9 @@ class EtsyAPI:
         refreshed = r.json()
         self.token = refreshed["access_token"]
         self.refresh_token = refreshed["refresh_token"]
-        tmp_expiry = datetime.now(self.expiry.tzinfo) + timedelta(seconds=refreshed["expires_in"])
+        tmp_expiry = datetime.now(self.expiry.tzinfo) + timedelta(
+            seconds=refreshed["expires_in"]
+        )
         self.expiry = tmp_expiry
         self.session.headers["Authorization"] = "Bearer " + self.token
         if self.refresh_save is not None:
