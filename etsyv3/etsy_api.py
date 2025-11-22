@@ -184,7 +184,7 @@ class EtsyAPI:
         else:
             self.refresh()
             rkw: Dict[str, Any] = kwargs
-            return self._issue_request(uri, **rkw)
+            return self._issue_request(uri, method=method, request_payload=request_payload, **rkw)
 
     def get_buyer_taxonomy_nodes(self) -> Any:
         uri = f"{ETSY_API_BASEURL}/buyer-taxonomy/nodes"
