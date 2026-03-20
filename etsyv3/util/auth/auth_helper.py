@@ -11,12 +11,14 @@ class AuthHelper:
     def __init__(
         self,
         keystring: str,
+        shared_secret: str,
         redirect_uri: str,
         scopes: Optional[List[str]] = None,
         code_verifier: Optional[str] = None,
         state: Optional[str] = None,
     ):
         self.keystring = keystring
+        self.shared_secret = shared_secret
         self.redirect_url = redirect_uri
         self.scopes = scopes
         if code_verifier is None:
@@ -53,7 +55,7 @@ class AuthHelper:
         headers = {
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-api-key": self.keystring,
+            "x-api-key": f"{self.keystring}:{self.shared_secret}",
         }
         self.token = self.oauth.fetch_token(
             "https://api.etsy.com/v3/public/oauth/token",

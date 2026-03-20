@@ -108,6 +108,7 @@ class EtsyAPI:
     def __init__(
         self,
         keystring: str,
+        shared_secret: str,
         token: str,
         refresh_token: str,
         expiry: datetime,
@@ -120,7 +121,7 @@ class EtsyAPI:
         self.keystring = keystring
         self.session.headers = {
             "Accept": "application/json",
-            "x-api-key": keystring,
+            "x-api-key": f"{keystring}:{shared_secret}",
             "Authorization": "Bearer " + self.token,
         }
         self.expiry = expiry
