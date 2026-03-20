@@ -43,7 +43,7 @@ def oauth_callback(request):
 
 ### I'm authenticated, now what?
 
-Now that you have your keystring, access token, refresh token and token expiry time, you can create your `EtsyAPI` object! The `EtsyAPI` initialiser requires a `keystring`, `token`, `refresh_token` and `expiry` (as a `datetime` object) to be set: these will be the values returned from the call to `get_access_token()` in authentication. A function can be specified as a named argument `refresh_save`, that takes three parameters `access_token`, `refresh_token` and `expires_at`. This function will be run whenever the token needs to be refreshed to update it for future use and store it somewhere.
+Now that you have your keystring, access token, refresh token and token expiry time, you can create your `EtsyAPI` object! The `EtsyAPI` initialiser requires a `keystring`, `shared_secret`, `token`, `refresh_token` and `expiry` (as a `datetime` object) to be set: these will be the values returned from the call to `get_access_token()` in authentication. A function can be specified as a named argument `refresh_save`, that takes three parameters `access_token`, `refresh_token` and `expires_at`. This function will be run whenever the token needs to be refreshed to update it for future use and store it somewhere.
 
 You can call any of the Etsy API methods from the `EtsyAPI` object: they'll generally be just a snake-case form of the Etsy published names (eg `GetBuyerTaxonomyNodes` becomes `get_buyer_taxonomy_nodes()`).
 
