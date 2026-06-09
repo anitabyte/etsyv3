@@ -5,7 +5,9 @@ from etsyv3.models.listing_request import Request
 
 
 class CreateReceiptShipmentRequest(Request):
-    nullable: List[str] = []
+    nullable: List[str] = [
+        "ship_date",
+    ]
     mandatory: List[str] = []
 
     def __init__(
@@ -14,11 +16,13 @@ class CreateReceiptShipmentRequest(Request):
         carrier_name: Optional[Union[ShippingProvider, str]] = None,
         send_bcc: Optional[bool] = None,
         note_to_buyer: Optional[str] = None,
+        ship_date: Optional[str] = None,
     ):
         self.tracking_code = tracking_code
         self.carrier_name = carrier_name
         self.send_bcc = send_bcc
         self.note_to_buyer = note_to_buyer
+        self.ship_date = ship_date
 
         super().__init__(
             nullable=CreateReceiptShipmentRequest.nullable,
