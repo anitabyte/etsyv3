@@ -1,7 +1,7 @@
 import base64
 import hashlib
 import secrets
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict, Any
 
 from etsyv3 import BadRequest
 from requests_oauthlib import OAuth2Session  # type: ignore[import]
@@ -51,7 +51,7 @@ class AuthHelper:
                 {"error": "invalid_request", "error_description": "State mismatch"}
             )
 
-    def get_access_token(self) -> Optional[str]:
+    def get_access_token(self) -> Optional[Dict[str, Any]]:
         headers = {
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
